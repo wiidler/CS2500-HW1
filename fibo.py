@@ -15,18 +15,6 @@ def fibo(n, count=None):
     return fibo(n - 1, count) + fibo(n - 2, count)
 
 
-def compare_matrices(S, P):
-    if len(S) != len(P) or len(S[0]) != len(P[0]):
-        return False
-    print("pass")
-    for i in range(len(S)):
-        for j in range(len(S[0])):
-            if S[i][j] != P[i][j]:
-                return False
-    print("Pass 2")
-    return True
-
-
 def naive_matrix_mult(P, num):
     a, b = len(P), len(P[0])
     g, h = a, b
