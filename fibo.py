@@ -2,41 +2,60 @@
 # Author: Will Weidler
 # Date: 11/2/23
 
-# Description: Briefly describe the purpose of this script.
 
-# Import necessary libraries/modules
+def fibo(n, count=None):
+    if count is None:
+        count = [0] * (n + 1)
 
-# Define global constants and variables (if needed)
-
-# Define functions (if needed)
-def fibo(n):
-    n = 0
-    if(n <= 1):
+    if n <= 1:
+        count[n] += 1
         return n
-    else:
-        return fibo(n+1) + fibo(n-2)
-    
-def naive_matrix_mult(S, P):
-    a = len(S)
-    b = len(S[0])
-    g = len(P)
-    h = len(P[0])
-    if b != g:
-        raise ValueError("Matrix dimensions are not compatible for multiplication")
-    Q = [[0 for r in range(h)] for m in range(a)]
-    for m in range(a):
-        for r in range(h):
-            Q[m][r] = 0
-            for k in range(g):
-                Q[m][r] += S[m][k] * P[k][r]
-    return Q
+
+    count[n] += 1
+    return fibo(n - 1, count) + fibo(n - 2, count)
 
 
+def compare_matrices(S, P):
+    if len(S) != len(P) or len(S[0]) != len(P[0]):
+        return False
+    print("pass")
+    for i in range(len(S)):
+        for j in range(len(S[0])):
+            if S[i][j] != P[i][j]:
+                return False
+    print("Pass 2")
+    return True
 
-# Main execution or entry point of the script
+
+def naive_matrix_mult(P, num):
+    a, b = len(P), len(P[0])
+    g, h = a, b
+    c = 0
+
+    Q = [[0 for _ in range(h)] for _ in range(a)]
+
+    while num > 0:
+        for m in range(a):
+            for r in range(h):
+                for k in range(g):
+                    Q[m][r] += P[m][k] * P[k][r]
+                    c += 1
+        num -= 1
+
+    return c
+
+
 def main():
-    FindFibo = int(input("Enter a value:"))
-    pass
+    FiboNum = int(input())
+    count = [0] * (FiboNum + 1)
+    result = fibo(FiboNum, count)
+    print(count[1])
+    for i in range(FiboNum + 1):
+        print(f"fibo({i}) : {count[i]}")
+    ArrayS = [[fibo(FiboNum - 1), fibo(FiboNum)], [fibo(FiboNum), fibo(FiboNum + 1)]]
+    ArrayP = [[0, 1], [1, 1]]
+    print(naive_matrix_mult(ArrayP, FiboNum))
+
 
 if __name__ == "__main__":
     main()
