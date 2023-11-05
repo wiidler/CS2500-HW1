@@ -2,6 +2,7 @@
 # Author: Will Weidler
 # Date: 11/2/23
 
+ArrayP = [[0, 1], [1, 1]]
 
 def fibo(n, count=None):
     if count is None:
@@ -15,22 +16,30 @@ def fibo(n, count=None):
     return fibo(n - 1, count) + fibo(n - 2, count)
 
 
-def naive_matrix_mult(P, num):
+def naive_matrix_mult(P, Q, count):
     a, b = len(P), len(P[0])
     g, h = a, b
-    c = 0
+    result = [[0 for _ in range(b)] for _ in range(a)]
 
-    Q = [[0 for _ in range(h)] for _ in range(a)]
+    for m in range(a):
+        for r in range(h):
+            for k in range(g):
+                result[m][r] += P[m][k] * Q[k][r]
+                count += 1
 
-    while num > 0:
-        for m in range(a):
-            for r in range(h):
-                for k in range(g):
-                    Q[m][r] += P[m][k] * P[k][r]
-                    c += 1
-        num -= 1
+    return result, count
 
-    return c
+def matrix_power(P, num):
+    if num == 1:
+        return P, 0
+
+    result = P
+    count = 0
+    for _ in range(num - 1):
+        result, count = naive_matrix_mult(P, result, count)
+
+    return result, count
+
 
 
 def main():
@@ -40,9 +49,8 @@ def main():
     print(count[1])
     for i in range(FiboNum + 1):
         print(f"fibo({i}) : {count[i]}")
-    ArrayS = [[fibo(FiboNum - 1), fibo(FiboNum)], [fibo(FiboNum), fibo(FiboNum + 1)]]
-    ArrayP = [[0, 1], [1, 1]]
-    print(naive_matrix_mult(ArrayP, FiboNum))
+    result, count = matrix_power(ArrayP, FiboNum)
+    print(count)
 
 
 if __name__ == "__main__":
